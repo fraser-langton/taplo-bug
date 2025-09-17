@@ -11,10 +11,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Checkout code
-        run: |
-          git fetch --no-tags --depth=1 origin +refs/heads/${{ github.base_ref }}
-          git fetch --no-tags --depth=1 origin ${{ github.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -34,9 +30,7 @@ jobs:
         run: |
           uv add --dev pre-commit
 
-      - name: run precommit files
-        # https://github.com/pre-commit/pre-commit/issues/1554
-        # since we have shallow checkouts we need to generate the file list ourselves.
+      - name: run precommit
         run: |
-          echo "Running pre-commit with verbose output..."
-          uv run pre-commit run --show-diff-on-failure --verbose --files $(git diff --name-only --no-ext-diff origin/${{ github.event.pull_request.base.ref }}..HEAD)
+          echo "Running pre-commit on all files..."
+          uv run pre-commit run --show-diff-on-failure --verbose --all-files
