@@ -1,12 +1,39 @@
 [project]
-    name            = "taplo-formatting-bug"
-    version         = "0.1.0"
-    description     = "Reproduction case for taplo formatting inconsistency"
+    name = "taplo-formatting-bug"
+    version = "0.1.0"
+    description = "Reproduction case for taplo formatting inconsistency"
     requires-python = "==3.12.*"
-    dependencies    = [ "fastapi>=0.116.2", "httpx>=0.28.1", "pydantic>=2.11.9" ]
+    dependencies = [
+        "boto3>=1.40.32",
+        "botocore>=1.40.32",
+        "fastapi>=0.116.2",
+        "httpx>=0.28.1",
+        "opentelemetry-api>=1.37.0",
+        "opentelemetry-exporter-otlp-proto-grpc>=1.37.0",
+        "opentelemetry-instrumentation-fastapi>=0.58b0",
+        "opentelemetry-instrumentation-httpx>=0.58b0",
+        "opentelemetry-instrumentation-redis>=0.58b0",
+        "opentelemetry-sdk>=1.37.0",
+        "pydantic-settings>=2.10.1",
+        "pydantic>=2.11.9",
+        "python-dotenv>=1.1.1",
+        "python-multipart>=0.0.20",
+        "redis>=6.4.0",
+        "structlog>=25.4.0",
+        "uvicorn>=0.35.0",
+    ]
 
 [dependency-groups]
-    dev = [ "pre-commit>=4.3.0", "pytest>=8.4.2", "ruff>=0.13.0" ]
+    dev = [
+        "localstack>=4.8.1",
+        "opentelemetry-instrumentation-boto3sqs>=0.58b0",
+        "pre-commit>=4.3.0",
+        "pytest-asyncio>=1.2.0",
+        "pytest-cov>=7.0.0",
+        "pytest>=8.4.2",
+        "ruff>=0.13.0",
+        "ty>=0.0.1a20",
+]
 
 [tool.pytest.ini_options]
     testpaths = [ "tests" ]
