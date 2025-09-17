@@ -25,6 +25,7 @@
 
 [dependency-groups]
     dev = [
+        "foo",
         "localstack>=4.8.1",
         "opentelemetry-instrumentation-boto3sqs>=0.58b0",
         "pre-commit>=4.3.0",
