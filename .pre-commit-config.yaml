@@ -1,4 +1,5 @@
 repos:
+
   - repo: https://github.com/ComPWA/taplo-pre-commit
     rev: v0.9.3
     hooks:
@@ -6,3 +7,7 @@ repos:
         name: Format TOML files
         files: \.toml$
         args: [--verbose, --diff]
+      - id: taplo-lint
+        name: Lint TOML files
+        files: \.toml$
+        args: [--verbose]
