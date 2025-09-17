@@ -1,33 +1,42 @@
-name: Test Taplo Formatting
+name: Pre-commit checks
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
+  push:
     branches: [ main ]
 
 jobs:
-  test-taplo:
+  pre-commit:
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-    
-    - name: Install pre-commit
-      run: pip install pre-commit
-    
-    - name: Run taplo formatting
-      run: pre-commit run taplo-format --all-files --verbose
-      
-    - name: Show git diff if formatting failed
-      if: failure()
-      run: |
-        echo "Git status:"
-        git status
-        echo "Git diff:"
-        git diff
+      - uses: actions/checkout@v4
+      - name: Checkout code
+        run: |
+          git fetch --no-tags --depth=1 origin +refs/heads/${{ github.base_ref }}
+          git fetch --no-tags --depth=1 origin ${{ github.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: "latest"
+
+      - name: Install dependencies
+        run: |
+          uv sync --dev
+
+      - name: Install pre-commit
+        run: |
+          uv add --dev pre-commit
+
+      - name: run precommit files
+        # https://github.com/pre-commit/pre-commit/issues/1554
+        # since we have shallow checkouts we need to generate the file list ourselves.
+        run: |
+          echo "Running pre-commit with verbose output..."
+          uv run pre-commit run --show-diff-on-failure --verbose --files $(git diff --name-only --no-ext-diff origin/${{ github.event.pull_request.base.ref }}..HEAD)
